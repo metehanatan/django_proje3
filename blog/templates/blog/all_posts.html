@@ -1,0 +1,100 @@
+{% extends 'core/base.html' %}
+
+{% block container %}
+
+<div class="row">
+    <div class="col-sm-9">
+
+            {% if category %}
+            <h1> {{ category.title }}</h1>
+            {% elif tag %}
+            <h1> {{ tag.title|title }}</h1>
+            {% else %}
+            <h1>Tüm Blog Postları</h1>
+            {% endif %}
+
+            {% for post in posts %}
+            <div class="col mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm">
+                                <img src="{{ post.cover_image.url }}" alt="" class="w-100 img-thumbnail">
+                            </div>
+                            <div class="col-sm">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text"> {{ post.content|safe|truncatewords_html:10 }} </p>
+                                <ul class="list-inline">
+                                    {% for tag in post.tag.all %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ tag.get_absolute_url }}" class="">
+                                            <span class="badge text-bg-primary">{{ tag.title }}</span>
+                                        </a>
+                                    </li>
+                                        {% endfor %}
+                                </ul>   
+                                <a href="{{ post.get_absolute_url }}" class="card-link">Incele</a>
+                            </div>
+                        </div>
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if posts.paginator %}
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if posts.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+
+                    {% with ''|center:posts.paginator.num_pages as range %}
+                    {% for _ in range %}
+                        <li class="page-item"><a class="page-link" href="?page= {{ forloop.counter }}">{{ forloop.counter}}</a></li>
+                    {% endfor %}
+                    {% endwith %}
+                    
+                    
+                    {% if posts.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last</a></li>
+                    {% endif %}
+
+                </ul>
+              </nav>
+
+              {% endif %}
+
+    </div>
+    <div class="col-sm-3">
+        <h3>Kategoriler</h3>
+        <div class="list-group">
+            {% for category in categories%}
+            <a href="{{ category.get_absolute_url }}" class="list-group-item list-group-item-action" aria-current="true">
+                {{ category.title }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <h3 class="mt-4"> Etiketler</h3>
+        <ul class="list-inline">
+            {% for tag in tags%}
+            <li class="list-inline-item">
+                <a href="{{ tag.get_absolute_url }}" class="">
+                    <span class="badge text-bg-primary">{{ tag.title }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+    
+
+
+{% endblock container %}
+
+
+

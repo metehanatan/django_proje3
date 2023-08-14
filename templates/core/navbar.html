@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">DjangoMania</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Ana Sayfa</a>
+          </li>
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Todo Kategoriler
+              </a>
+              <ul class="dropdown-menu">
+                  {% for category in global_todo_categories %}
+                  <li>
+                    <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                    {% comment "Optional note" %}
+                      <a class="dropdown-item" href="{% url 'category_view' category_slug=category.slug%}">{{ category.title }}</a>
+                    {% endcomment %}
+                  </li>
+                  {% endfor %}
+              </ul>
+            </li>
+
+
+            {% for page in global_pages %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ page.get_absolute_url }}">{{ page.title}}</a>
+            </li>
+            {% endfor %}
+            
+
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'blog:all_post_view' %}">Blog</a>
+            </li>
+
+            {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'logout_view' %}">Oturumu Kapat</a>
+              </li>
+            {% endif %} 
+          </ul>
+        </div>
+      </div>
+  </nav>

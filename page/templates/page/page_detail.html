@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {{ page.title }} {%endblock title%}
+
+{% block container-fluid %}
+<div class="container-fluid mb-4">
+    <div class="row">
+        <div class="col-sm-12 px-0">
+        <img src="{{ page.cover_image.url }}" alt="" class="w-100">
+        </div>
+    </div>
+  {% include 'page/component/hero_component.html' with hero_title=page.title %}
+ 
+</div>
+{% endblock container-fluid %}
+
+{% block container %}
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+    {{ page.content|safe }}
+  </div>
+</div>
+
+{% endblock container %}
+
+
+
+
+
